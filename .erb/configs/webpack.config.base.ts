@@ -11,7 +11,6 @@ const configuration: webpack.Configuration = {
   externals: [...Object.keys(externals || {})],
 
   stats: 'errors-only',
-
   module: {
     rules: [
       {
@@ -52,7 +51,7 @@ const configuration: webpack.Configuration = {
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
-    }),
+    })
   ],
 };
 
