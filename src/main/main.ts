@@ -15,7 +15,7 @@ import log from 'electron-log'
 import MenuBuilder from './menu'
 import { resolveHtmlPath } from './util'
 import constants from './constants'
-import { convertVideo } from './ffmpeg'
+import { convertVideo, convertImage } from './ffmpeg'
 
 class AppUpdater {
   constructor () {
@@ -34,6 +34,9 @@ ipcMain.on('ipc-example', async (event, arg) => {
 })
 ipcMain.on(constants.event_keys.GET_INPUT_VIDEO, (event, ...arg) =>
   convertVideo(event, ...arg)
+)
+ipcMain.on(constants.event_keys.GET_INPUT_IMAGE, (event, ...arg) =>
+  convertImage(event, ...arg)
 )
 
 ipcMain.on(constants.event_keys.TEST, (event, arg) => {
