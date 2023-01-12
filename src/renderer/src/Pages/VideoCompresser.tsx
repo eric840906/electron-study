@@ -1,8 +1,72 @@
+import { useState } from 'react';
 import FileInput from '../components/FileInput';
+import { Divider, Typography, Collapse } from 'antd';
+import constants from 'main/constants';
+import VideoFormatForm from '../components/VideoFormatForm';
 export default () => {
+  let formatterOption = {};
+  const onChange = (key: string | string[]) => {
+    console.log(key);
+  };
+  const { Title } = Typography;
+  const { Panel } = Collapse;
+  const [file, setFile] = useState<File>();
+  const [fps, setFps] = useState(24);
+  const [bitRate, setBitRate] = useState(1500);
+  const [size, setSize] = useState('640x480');
+  const onfpsChange = (newValue: string) => {
+    setFps(+newValue);
+    formatterOption = { ...formatterOption, fps, bitRate, size };
+    console.log(formatterOption);
+  };
+  const onbitRateChange = (newValue: string) => {
+    setBitRate(+newValue);
+    formatterOption = { ...formatterOption, fps, bitRate, size };
+    console.log(formatterOption);
+  };
+  const onSizeChange = (newValue: string) => {
+    setSize(newValue);
+    formatterOption = { ...formatterOption, fps, bitRate, size };
+    console.log(formatterOption);
+  };
+  const sendFilePath = () => {
+    if (!file) return;
+    console.log(file);
+    if (file.type.includes('video')) {
+      window.electron.ipcRenderer.send(
+        constants.event_keys.GET_INPUT_VIDEO,
+        file.path
+      );
+    }
+
+    // dialog.showOpenDialog({ properties: ['openFile'] }, function (file: any) {
+    //   console.log(file);
+    //   ipcRenderer.send(event_keys.GET_INPUT_PATH, file[0]);
+    // });
+  };
   return (
     <>
-      <FileInput accept="video/*" />
+      <Title level={3}>影片轉檔</Title>
+      <Divider></Divider>
+      <Collapse defaultActiveKey={['1']} onChange={onChange}>
+        <Panel header="轉檔設定" key="1">
+          <VideoFormatForm
+            onfpsChange={onfpsChange}
+            onBitRateChange={onbitRateChange}
+            onSizeChange={onSizeChange}
+            defaultFps={'' + fps}
+            defaultBitRate={bitRate}
+            defaultSize={size}
+          />
+        </Panel>
+      </Collapse>
+      <Divider></Divider>
+
+      <FileInput
+        accept="video/*"
+        onFileChange={setFile}
+        sendFilePath={sendFilePath}
+      />
     </>
   );
 };
