@@ -1,19 +1,26 @@
 import { Button, Input } from 'antd';
-import { useState } from 'react';
+// import { useState } from 'react';
 // import { dialog, ipcRenderer } from 'electron';
 // import { Dialog } from 'electron';
 // import { ipcRenderer } from 'electron/renderer';
-import event_keys from 'main/event_keys';
-const FileInput: React.FC<{ accept: string }> = ({ accept }) => {
-  const [file, setFile] = useState<FileList>();
-  const sendFilePath = (file: any) => {
-    console.log(file);
-    window.electron.ipcRenderer.send(event_keys.GET_INPUT_PATH, file.path);
-    // dialog.showOpenDialog({ properties: ['openFile'] }, function (file: any) {
-    //   console.log(file);
-    //   ipcRenderer.send(event_keys.GET_INPUT_PATH, file[0]);
-    // });
-  };
+// import event_keys from 'main/event_keys';
+const FileInput: React.FC<{
+  onFileChange: any;
+  sendFilePath: any;
+  accept: string;
+}> = ({ onFileChange, sendFilePath, accept }) => {
+  // const [file, setFile] = useState<FileList>();
+  // const sendFilePath = (file: any) => {
+  //   console.log(file);
+  //   if (file.type.includes('video')) {
+  //     window.electron.ipcRenderer.send(event_keys.GET_INPUT_VIDEO, file.path);
+  //   }
+
+  // dialog.showOpenDialog({ properties: ['openFile'] }, function (file: any) {
+  //   console.log(file);
+  //   ipcRenderer.send(event_keys.GET_INPUT_PATH, file[0]);
+  // });
+  // };
   return (
     <>
       <Input
@@ -21,12 +28,9 @@ const FileInput: React.FC<{ accept: string }> = ({ accept }) => {
         name=""
         id=""
         accept={`${accept}`}
-        onChange={(e) => e.target.files && setFile(e.target.files)}
+        onChange={(e) => e.target.files && onFileChange(e.target.files[0])}
       />
-      <Button
-        className="button-convert"
-        onClick={() => file && sendFilePath(file[0])}
-      >
+      <Button className="button-convert" onClick={() => sendFilePath()}>
         開始轉檔
       </Button>
     </>
