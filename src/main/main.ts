@@ -14,7 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import event_keys from './event_keys';
+import constants from './constants';
 import { convertVideo } from './ffmpeg';
 
 class AppUpdater {
@@ -32,9 +32,9 @@ ipcMain.on('ipc-example', async (event, arg) => {
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
 });
-ipcMain.on(event_keys.GET_INPUT_VIDEO, (event, arg) => convertVideo(event, arg))
+ipcMain.on(constants.event_keys.GET_INPUT_VIDEO, (event, arg) => convertVideo(event, arg))
 
-ipcMain.on(event_keys.TEST, (event, arg) => {
+ipcMain.on(constants.event_keys.TEST, (event, arg) => {
   console.log(arg)
 })
 

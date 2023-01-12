@@ -2,7 +2,7 @@ import { useState } from 'react';
 import FileInput from '../components/FileInput';
 import { Divider, Typography, Collapse } from 'antd';
 import ImageFormatForm from '../components/ImageFormatForm';
-import event_keys from 'main/event_keys';
+import event_keys from 'main/constants';
 export default () => {
   let formatterOption = {};
   const [file, setFile] = useState<FileList>();
