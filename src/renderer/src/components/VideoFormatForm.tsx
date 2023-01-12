@@ -1,4 +1,4 @@
-import { Form, InputNumber, Select } from 'antd';
+import { Form, InputNumber, Select, Button } from 'antd';
 import constants from 'main/constants';
 import React from 'react';
 
@@ -43,7 +43,11 @@ const VideoFormatForm: React.FC<{
       </Form.Item>
       <Form.Item label="bitrate">
         <Form.Item name="bitRate" noStyle>
-          <InputNumber min={800} max={4000} onBlur={onBitRateChange} />
+          <InputNumber
+            min={800}
+            max={4000}
+            onChange={(val) => onBitRateChange(val)}
+          />
         </Form.Item>
         <span className="ant-form-text" style={{ marginLeft: 8 }}>
           K

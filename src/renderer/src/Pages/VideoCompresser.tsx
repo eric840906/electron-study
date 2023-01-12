@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FileInput from '../components/FileInput';
 import { Divider, Typography, Collapse } from 'antd';
 import constants from 'main/constants';
@@ -20,30 +20,27 @@ export default () => {
   });
   const onfpsChange = (newValue: string) => {
     setFps(+newValue);
-    setFormatterOption({ ...formatterOption, fps, bitRate, size });
-    console.log(formatterOption);
   };
-  const onbitRateChange = (newValue: string) => {
-    setBitRate(+newValue);
-    setFormatterOption({ ...formatterOption, fps, bitRate, size });
-    console.log(formatterOption);
+  const onbitRateChange = (newValue: number) => {
+    setBitRate(() => newValue);
   };
   const onSizeChange = (newValue: string) => {
     setSize(newValue);
-    setFormatterOption({ ...formatterOption, fps, bitRate, size });
-    console.log(formatterOption);
   };
+  useEffect(() => {
+    setFormatterOption((oldOption) => {
+      return { ...oldOption, fps, bitRate, size };
+    });
+  }, [fps, bitRate, size]);
   const sendFilePath = () => {
     if (!file) return;
-    console.log(file);
-    if (file.type.includes('video')) {
-      const serilizedOption = JSON.stringify(formatterOption);
-      window.electron.ipcRenderer.send(
-        constants.event_keys.GET_INPUT_VIDEO,
-        file.path,
-        serilizedOption
-      );
-    }
+    console.log(formatterOption);
+    // const serilizedOption = JSON.stringify(formatterOption);
+    // window.electron.ipcRenderer.send(
+    //   constants.event_keys.GET_INPUT_VIDEO,
+    //   file.path,
+    //   serilizedOption
+    // );
 
     // dialog.showOpenDialog({ properties: ['openFile'] }, function (file: any) {
     //   console.log(file);
