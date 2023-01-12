@@ -30,7 +30,10 @@ const checkFolder = async(directory) => {
       }
   }
 }
-export const convertVideo = async (event, filePath) => {
+export const convertVideo = async (event, ...args) => {
+  const config = args[1]
+  const filePath = args[0]
+  const {fps, bitRate, size } = (JSON.parse(config))
   checkFolder()
   const { name } = path.parse(filePath)
   // console.log(ffmpegPath)
@@ -40,9 +43,9 @@ export const convertVideo = async (event, filePath) => {
   ffmpeg(filePath)
   .videoCodec('libx264')
   .audioCodec('libmp3lame')
-  .videoBitrate(1000)
-  .fps(29.7)
-  .size('320x240')
+  .videoBitrate(bitRate)
+  .fps(fps)
+  .size(size)
   .on('error', function(err) {
     console.log('An error occurred: ' + err.message);
   })
@@ -52,8 +55,7 @@ export const convertVideo = async (event, filePath) => {
   .on('end', function() {
     console.log('Processing finished !');
   })
-  .save(`${outputPath}\\${name}_compressed.mp4`);
-
+  .save(`${outputPath}\\${name}_${size}_compressed.mp4`);
 }
 
 

@@ -4,7 +4,6 @@ import { Divider, Typography, Collapse } from 'antd';
 import constants from 'main/constants';
 import VideoFormatForm from '../components/VideoFormatForm';
 export default () => {
-  let formatterOption = {};
   const onChange = (key: string | string[]) => {
     console.log(key);
   };
@@ -14,28 +13,35 @@ export default () => {
   const [fps, setFps] = useState(24);
   const [bitRate, setBitRate] = useState(1500);
   const [size, setSize] = useState('640x480');
+  const [formatterOption, setFormatterOption] = useState({
+    fps,
+    bitRate,
+    size,
+  });
   const onfpsChange = (newValue: string) => {
     setFps(+newValue);
-    formatterOption = { ...formatterOption, fps, bitRate, size };
+    setFormatterOption({ ...formatterOption, fps, bitRate, size });
     console.log(formatterOption);
   };
   const onbitRateChange = (newValue: string) => {
     setBitRate(+newValue);
-    formatterOption = { ...formatterOption, fps, bitRate, size };
+    setFormatterOption({ ...formatterOption, fps, bitRate, size });
     console.log(formatterOption);
   };
   const onSizeChange = (newValue: string) => {
     setSize(newValue);
-    formatterOption = { ...formatterOption, fps, bitRate, size };
+    setFormatterOption({ ...formatterOption, fps, bitRate, size });
     console.log(formatterOption);
   };
   const sendFilePath = () => {
     if (!file) return;
     console.log(file);
     if (file.type.includes('video')) {
+      const serilizedOption = JSON.stringify(formatterOption);
       window.electron.ipcRenderer.send(
         constants.event_keys.GET_INPUT_VIDEO,
-        file.path
+        file.path,
+        serilizedOption
       );
     }
 
