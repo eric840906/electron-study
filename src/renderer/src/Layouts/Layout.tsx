@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import React, { useState } from 'react';
 import Menu from '../components/Menu';
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from '../Pages/Home';
 import VideoCompresser from '../Pages/VideoCompresser';
 import ImageConverter from '../Pages/ImageConverter';
