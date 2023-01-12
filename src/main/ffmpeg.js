@@ -40,6 +40,8 @@ export const convertVideo = async (event, filePath) => {
   ffmpeg(filePath)
   .videoCodec('libx264')
   .audioCodec('libmp3lame')
+  .videoBitrate(1000)
+  .fps(29.7)
   .size('320x240')
   .on('error', function(err) {
     console.log('An error occurred: ' + err.message);
