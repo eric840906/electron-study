@@ -54,8 +54,8 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
             style={{
               textAlign: 'center',
               padding: 0,
-              color: `${isDark ? 'white' : '#1a1a1a'}`,
-              background: `${isDark ? '#1a1a1a' : 'white'}`,
+              color: `${isDark ? 'white' : '#141414'}`,
+              background: `${isDark ? '#141414' : 'white'}`,
               // background: `white`,
             }}
           >
@@ -74,8 +74,8 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
           <Footer
             style={{
               textAlign: 'center',
-              color: `${isDark ? 'white' : '#1a1a1a'}`,
-              background: `${isDark ? '#1a1a1a' : 'white'}`,
+              color: `${isDark ? 'white' : '#141414'}`,
+              background: `${isDark ? '#141414' : 'white'}`,
             }}
           >
             Footer
