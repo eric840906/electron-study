@@ -9,7 +9,7 @@ export default () => {
   const [outputType, setOutputType] = useState('.png');
   const [formatterOption, setFormatterOption] = useState({});
   const onFileChange = (newFile: any) => {
-    if (!newFile.length) {
+    if (!newFile || !newFile.length) {
       setFile(undefined);
     } else {
       console.log(newFile[0].originFileObj);

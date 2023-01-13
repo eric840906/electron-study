@@ -19,6 +19,12 @@ const FileInput: React.FC<{
     },
     onDrop(e) {
       console.log('Dropped files', e.dataTransfer.files);
+      if (
+        e.dataTransfer.files[0].type?.split('/')[0] !== accept.split('/')[0]
+      ) {
+        alert('wrong file');
+        return;
+      }
     },
     beforeUpload() {
       return false;
@@ -30,10 +36,15 @@ const FileInput: React.FC<{
         <p className="ant-upload-drag-icon">
           <FileAddOutlined />
         </p>
-        <p className="ant-upload-text">拖曳或點擊選擇檔案</p>
+        <p className="ant-upload-text">Drag or click to select file</p>
       </Dragger>
-      <Button className="button-convert" onClick={() => sendFilePath()}>
-        <ReloadOutlined />
+
+      <Button
+        className="button-convert"
+        onClick={() => sendFilePath()}
+        style={{ marginTop: 20 }}
+        icon={<ReloadOutlined />}
+      >
         開始轉檔
       </Button>
     </div>
