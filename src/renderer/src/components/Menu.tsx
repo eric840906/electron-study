@@ -58,24 +58,21 @@ const SideMenu: React.FC<{
       [getItem('Log in', '13', <LoginOutlined />)],
       'group'
     ),
-    getItem(
-      <Switch
-        onChange={onThemeChange}
-        checkedChildren="Dark"
-        unCheckedChildren="Light"
-      />,
-      'switch'
-    ),
   ];
   return (
-    <Menu
-      onClick={onClick}
-      style={{ width: 256, height: '100%', paddingTop: 10 }}
-      defaultSelectedKeys={['1']}
-      defaultOpenKeys={['sub1']}
-      mode="inline"
-      items={items}
-    />
+    <>
+      <Menu
+        onClick={onClick}
+        style={{
+          width: 256,
+          paddingTop: 10,
+        }}
+        defaultSelectedKeys={['1']}
+        defaultOpenKeys={['sub1']}
+        mode="inline"
+        items={items}
+      />
+    </>
   );
 };
 export default SideMenu;

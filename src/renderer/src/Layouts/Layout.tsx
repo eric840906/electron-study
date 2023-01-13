@@ -19,9 +19,21 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
       <Layout>
         <Sider
           width={256}
-          style={{ minHeight: '100vh', color: 'white', padding: '0' }}
+          style={{
+            minHeight: '100vh',
+            color: 'white',
+            padding: '0',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
         >
           <SideMenu onThemeChange={onThemeChange} />
+          <Switch
+            onChange={onThemeChange}
+            checkedChildren="Dark"
+            unCheckedChildren="Light"
+            style={{ width: 60, position: 'absolute', bottom: 10, left: 10 }}
+          />
         </Sider>
         <Layout>
           <Header
