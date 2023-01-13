@@ -66,6 +66,7 @@ const SideMenu: React.FC<{
         style={{
           width: 256,
           paddingTop: 10,
+          height: '100%',
         }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}

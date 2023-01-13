@@ -1,6 +1,7 @@
-import { Layout, Switch } from 'antd';
+import { Layout, Switch, Button } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { SettingOutlined } from '@ant-design/icons';
 import Home from '../Pages/Home';
 import VideoCompresser from '../Pages/VideoCompresser';
 import ImageConverter from '../Pages/ImageConverter';
@@ -28,20 +29,33 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
           }}
         >
           <SideMenu onThemeChange={onThemeChange} />
-          <Switch
-            onChange={onThemeChange}
-            checkedChildren="Dark"
-            unCheckedChildren="Light"
-            style={{ width: 60, position: 'absolute', bottom: 10, left: 10 }}
-          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              left: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+            }}
+          >
+            <Button icon={<SettingOutlined />}></Button>
+            <Switch
+              onChange={onThemeChange}
+              checkedChildren="Light"
+              unCheckedChildren="Dark"
+              defaultChecked={true}
+              style={{ width: 60 }}
+            />
+          </div>
         </Sider>
         <Layout>
           <Header
             style={{
               textAlign: 'center',
               padding: 0,
-              color: `${isDark ? 'white' : 'black'}  `,
-              background: `${isDark ? 'black' : 'white'}  `,
+              color: `${isDark ? 'white' : '#1a1a1a'}`,
+              background: `${isDark ? '#1a1a1a' : 'white'}`,
               // background: `white`,
             }}
           >
@@ -57,7 +71,15 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
               <Route path="/image" element={<ImageConverter />} />
             </Routes>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Footer</Footer>
+          <Footer
+            style={{
+              textAlign: 'center',
+              color: `${isDark ? 'white' : '#1a1a1a'}`,
+              background: `${isDark ? '#1a1a1a' : 'white'}`,
+            }}
+          >
+            Footer
+          </Footer>
         </Layout>
       </Layout>
     </>
