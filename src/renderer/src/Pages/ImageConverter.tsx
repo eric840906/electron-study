@@ -4,9 +4,18 @@ import { Divider, Typography, Collapse } from 'antd';
 import ImageFormatForm from '../components/ImageFormatForm';
 import constants from 'main/constants';
 export default () => {
+  const acceptType = 'image';
   const [file, setFile] = useState<File>();
   const [outputType, setOutputType] = useState('.png');
   const [formatterOption, setFormatterOption] = useState({});
+  const onFileChange = (newFile: any) => {
+    if (!newFile.length) {
+      setFile(undefined);
+    } else {
+      console.log(newFile[0].originFileObj);
+      setFile(newFile[0].originFileObj);
+    }
+  };
   const onTypeChange = (newValue: string) => {
     setOutputType(newValue);
   };
@@ -17,6 +26,7 @@ export default () => {
   }, [outputType]);
   const sendFilePath = () => {
     if (!file) return;
+    console.log(file);
     console.log(formatterOption);
     const serilizedOption = JSON.stringify(formatterOption);
     window.electron.ipcRenderer.send(
@@ -24,6 +34,7 @@ export default () => {
       file.path,
       serilizedOption
     );
+    setFile(undefined);
   };
   const onCollapseChange = (key: string | string[]) => {
     console.log(key);
@@ -44,8 +55,8 @@ export default () => {
       </Collapse>
       <Divider></Divider>
       <FileInput
-        accept="image/*"
-        onFileChange={setFile}
+        accept={`${acceptType}/*`}
+        onFileChange={onFileChange}
         sendFilePath={sendFilePath}
       />
     </>

@@ -4,6 +4,7 @@ import { Divider, Typography, Collapse } from 'antd';
 import constants from 'main/constants';
 import VideoFormatForm from '../components/VideoFormatForm';
 export default () => {
+  const acceptType = 'video';
   const onChange = (key: string | string[]) => {
     console.log(key);
   };
@@ -18,6 +19,14 @@ export default () => {
     bitRate,
     size,
   });
+  const onFileChange = (newFile: any) => {
+    if (!newFile.length) {
+      setFile(undefined);
+    } else {
+      console.log(newFile[0].originFileObj);
+      setFile(newFile[0].originFileObj);
+    }
+  };
   const onfpsChange = (newValue: string) => {
     setFps(+newValue);
   };
@@ -66,8 +75,8 @@ export default () => {
       <Divider></Divider>
 
       <FileInput
-        accept="video/*"
-        onFileChange={setFile}
+        accept={`${acceptType}/*`}
+        onFileChange={onFileChange}
         sendFilePath={sendFilePath}
       />
     </>
