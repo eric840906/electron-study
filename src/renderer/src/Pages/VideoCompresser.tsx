@@ -35,12 +35,12 @@ export default () => {
   const sendFilePath = () => {
     if (!file) return;
     console.log(formatterOption);
-    // const serilizedOption = JSON.stringify(formatterOption);
-    // window.electron.ipcRenderer.send(
-    //   constants.event_keys.GET_INPUT_VIDEO,
-    //   file.path,
-    //   serilizedOption
-    // );
+    const serilizedOption = JSON.stringify(formatterOption);
+    window.electron.ipcRenderer.send(
+      constants.event_keys.GET_INPUT_VIDEO,
+      file.path,
+      serilizedOption
+    );
 
     // dialog.showOpenDialog({ properties: ['openFile'] }, function (file: any) {
     //   console.log(file);

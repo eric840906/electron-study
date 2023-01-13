@@ -32,9 +32,6 @@ export default (() => {
               <Route path="/image" element={<ImageConverter />} />
             </Routes>
           </Content>
-          {/* <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-          {this.props.children}
-        </div> */}
           <Footer style={{ textAlign: 'center' }}>Footer</Footer>
         </Layout>
       </Layout>

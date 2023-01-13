@@ -33,8 +33,9 @@ const checkFolder = async(directory) => {
 export const convertVideo = async (event, ...args) => {
   const config = args[1]
   const filePath = args[0]
-  const {fps, bitRate, size } = (JSON.parse(config))
+  const { fps, bitRate, size } = (JSON.parse(config))
   const { name } = path.parse(filePath)
+  console.log({name, fps, bitRate, size})
   checkFolder()
   ffmpeg(filePath)
   .videoCodec('libx264')
@@ -58,7 +59,7 @@ export const convertImage = async (event, ...args) => {
   const filePath = args[0]
   const { outputType } = (JSON.parse(config))
   const { name } = path.parse(filePath)
-  console.log(args)
+  console.log(name, outputType)
   checkFolder()
   ffmpeg(filePath)
   // .videoCodec('libx264')
@@ -66,16 +67,16 @@ export const convertImage = async (event, ...args) => {
   // .videoBitrate(bitRate)
   // .fps(fps)
   // .size(size)
-  // .on('error', function(err) {
-  //   console.log('An error occurred: ' + err.message);
-  // })
-  // .on('progress', function({ percent }) {
-  //   console.log(`Processing: ${percent ? percent : 0} % done`);
-  // })
-  // .on('end', function() {
-  //   console.log('Processing finished !');
-  // })
-  .save(`${outputPath}\\${name}.${outputType}`);
+  .on('error', function(err) {
+    console.log('An error occurred: ' + err.message);
+  })
+  .on('progress', function({ percent }) {
+    console.log(`Processing: ${percent ? percent : 0} % done`);
+  })
+  .on('end', function() {
+    console.log('Processing finished !');
+  })
+  .save(`${outputPath}\\${name}${outputType}`);
 }
 
 

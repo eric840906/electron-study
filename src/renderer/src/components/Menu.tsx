@@ -1,6 +1,6 @@
 import {
   FileImageOutlined,
-  SyncOutlined,
+  VideoCameraOutlined,
   LoginOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -33,7 +33,11 @@ const items: MenuProps['items'] = [
     </Link>,
     'brand'
   ),
-  getItem(<Link to="/video">Compress videos</Link>, 'sub1', <SyncOutlined />),
+  getItem(
+    <Link to="/video">Convert videos</Link>,
+    'sub1',
+    <VideoCameraOutlined />
+  ),
 
   getItem(
     <Link to="/image">Convert images</Link>,

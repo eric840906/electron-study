@@ -196,7 +196,7 @@
     "asar": true,
     "asarUnpack": [
       "**\\*.{node,dll}",
-      "node_modules/ffmpeg-static/ffmpeg",
+      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
       "node_modules/ffmpeg-static/index.js",
       "node_modules/ffmpeg-static/package.json"
     ],
