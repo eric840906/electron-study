@@ -1,33 +1,46 @@
-import { Layout } from 'antd';
-import React, { useState } from 'react';
-import Menu from '../components/Menu';
+import { Layout, Switch } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from '../Pages/Home';
 import VideoCompresser from '../Pages/VideoCompresser';
 import ImageConverter from '../Pages/ImageConverter';
+import SideMenu from '../components/Menu';
 
 const { Header, Footer, Sider, Content } = Layout;
-
-export default (() => {
+const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
+  isDark,
+  onThemeChange,
+}) => {
+  useEffect(() => {
+    console.log(isDark);
+  }, [isDark]);
   return (
     <>
       <Layout>
         <Sider
           width={256}
-          style={{ minHeight: '100vh', color: 'white', padding: '10px 0' }}
-          theme="light"
+          style={{ minHeight: '100vh', color: 'white', padding: '0' }}
         >
-          <Menu />
+          <SideMenu onThemeChange={onThemeChange} />
         </Sider>
         <Layout>
           <Header
-            style={{ background: '#fff', textAlign: 'center', padding: 0 }}
+            style={{
+              textAlign: 'center',
+              padding: 0,
+              color: `${isDark ? 'white' : 'black'}  `,
+              background: `${isDark ? 'black' : 'white'}  `,
+              // background: `white`,
+            }}
           >
             Header
           </Header>
           <Content style={{ margin: '24px 16px 0' }}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route
+                path="/"
+                element={<Home onThemeChange={onThemeChange} />}
+              />
               <Route path="/video" element={<VideoCompresser />} />
               <Route path="/image" element={<ImageConverter />} />
             </Routes>
@@ -37,4 +50,6 @@ export default (() => {
       </Layout>
     </>
   );
-}) as React.FC;
+};
+
+export default MainLayout;

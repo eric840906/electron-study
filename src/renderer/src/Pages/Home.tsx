@@ -1,16 +1,11 @@
 import { Button } from 'antd';
 import constant from 'main/constants';
 
-export default () => {
+const Home: React.FC<{ onThemeChange: any }> = ({ onThemeChange }: any) => {
   return (
     <>
-      <Button
-        onClick={() =>
-          window.electron.ipcRenderer.send(constant.event_keys.TEST, 123)
-        }
-      >
-        test button
-      </Button>
+      <Button onClick={() => onThemeChange()}>test button</Button>
     </>
   );
 };
+export default Home;

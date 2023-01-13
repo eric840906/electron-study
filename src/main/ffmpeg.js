@@ -15,8 +15,6 @@ const ffprobePath = require('ffprobe-static').path.replace(
 // //tell the ffmpeg package where it can find the needed binaries.
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
-// const command = ffmpeg()
-// console.log(command)
 const checkFolder = async(directory) => {
   try {
     await fs.stat(outputPath)
@@ -62,11 +60,6 @@ export const convertImage = async (event, ...args) => {
   console.log(name, outputType)
   checkFolder()
   ffmpeg(filePath)
-  // .videoCodec('libx264')
-  // .audioCodec('libmp3lame')
-  // .videoBitrate(bitRate)
-  // .fps(fps)
-  // .size(size)
   .on('error', function(err) {
     console.log('An error occurred: ' + err.message);
   })
