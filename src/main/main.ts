@@ -35,8 +35,9 @@ ipcMain.on('ipc-example', async (event, arg) => {
 ipcMain.on(constants.event_keys.GET_INPUT_VIDEO, (event, ...arg) =>
   convertVideo(event, ...arg)
 )
-ipcMain.on(constants.event_keys.GET_INPUT_IMAGE, (event, ...arg) =>
+ipcMain.on(constants.event_keys.GET_INPUT_IMAGE, (event, ...arg) =>{
   convertImage(event, ...arg)
+  }
 )
 
 ipcMain.on(constants.event_keys.TEST, (event, arg) => {

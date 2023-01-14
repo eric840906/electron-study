@@ -4,16 +4,11 @@ const outputPath = path.join(__dirname, '..', '..', 'output');
 //require the ffmpeg package so we can use ffmpeg using JS
 const ffmpeg = require('fluent-ffmpeg');
 // //Get the paths to the packaged versions of the binaries we want to use
-const ffmpegPath = require('ffmpeg-static').replace(
-    'app.asar',
-    'app.asar.unpacked'
-);
-const ffprobePath = require('ffprobe-static').path.replace(
-    'app.asar',
-    'app.asar.unpacked'
-);
+const ffmpegPath = require('ffmpeg-static')
+const ffprobePath = require('ffprobe-static')
 // //tell the ffmpeg package where it can find the needed binaries.
 ffmpeg.setFfmpegPath(ffmpegPath);
+console.log(ffmpegPath)
 ffmpeg.setFfprobePath(ffprobePath);
 const checkFolder = async(directory) => {
   try {
@@ -50,7 +45,7 @@ export const convertVideo = async (event, ...args) => {
   .on('end', function() {
     console.log('Processing finished !');
   })
-  .save(`${outputPath}\\${name}_${size}_compressed.mp4`);
+  .save(`${outputPath}\\${name}.mp4`);
 }
 export const convertImage = async (event, ...args) => {
   const config = args[1]
@@ -62,12 +57,14 @@ export const convertImage = async (event, ...args) => {
   ffmpeg(filePath)
   .on('error', function(err) {
     console.log('An error occurred: ' + err.message);
+    event.reply('image start', ffmpegPath)
   })
   .on('progress', function({ percent }) {
     console.log(`Processing: ${percent ? percent : 0} % done`);
   })
   .on('end', function() {
     console.log('Processing finished !');
+    event.reply('image complete', `${outputPath}\\${name}${outputType}`)
   })
   .save(`${outputPath}\\${name}${outputType}`);
 }

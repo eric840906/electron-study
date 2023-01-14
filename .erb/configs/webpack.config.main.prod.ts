@@ -11,6 +11,15 @@ import baseConfig from './webpack.config.base';
 import webpackPaths from './webpack.paths';
 import checkNodeEnv from '../scripts/check-node-env';
 import deleteSourceMaps from '../scripts/delete-source-maps';
+import CopyPlugin from 'copy-webpack-plugin';
+import os from 'node:os'
+let platform = 'linux';
+// patch for compatibilit with electron-builder, for smart built process.
+if (os.platform() == "darwin") {
+  platform = "mac";
+} else if (os.platform() == "win32") {
+  platform = "win";
+}
 
 checkNodeEnv('production');
 deleteSourceMaps();
@@ -66,6 +75,11 @@ const configuration: webpack.Configuration = {
 
     new webpack.DefinePlugin({
       'process.type': '"browser"',
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: `node_modules/ffmpeg-static-electron/bin/${platform}/${os.arch()}/ffmpeg.exe`, to: './' },
+      ],
     }),
   ],
 
