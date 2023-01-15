@@ -1,5 +1,4 @@
 import { Layout, Switch, Button } from 'antd';
-import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { SettingOutlined } from '@ant-design/icons';
 import Home from '../Pages/Home';
@@ -12,12 +11,9 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
   isDark,
   onThemeChange,
 }) => {
-  useEffect(() => {
-    console.log(isDark);
-  }, [isDark]);
   return (
     <>
-      <Layout>
+      <Layout style={{height: '100vh'}}>
         <Sider
           width={256}
           style={{
@@ -41,6 +37,7 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
           >
             <Button icon={<SettingOutlined />}></Button>
             <Switch
+              checked={!isDark}
               onChange={onThemeChange}
               checkedChildren="☀️"
               unCheckedChildren="🌙"
@@ -55,12 +52,11 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
               padding: 0,
               color: `${isDark ? 'white' : '#141414'}`,
               background: `${isDark ? '#141414' : 'white'}`,
-              // background: `white`,
             }}
           >
-            Header
+            
           </Header>
-          <Content style={{ margin: '24px 16px 0' }}>
+          <Content style={{ margin:10, padding: '24px 16px 0', overflowY:'auto' }}>
             <Routes>
               <Route
                 path="/"

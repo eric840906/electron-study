@@ -6,8 +6,7 @@ import './App.css';
 import MainLayout from './src/Layouts/Layout';
 
 export default function App() {
-  const { defaultAlgorithm, darkAlgorithm } = theme;
-  const [isDarkMode, setIsDarkMode] = useState(() => {
+  const checkDark = () => {
     if(localStorage.hasOwnProperty('isDarkMode')){
       const darkMode = window.localStorage.getItem('isDarkMode')
       if(darkMode === 'true') {
@@ -16,7 +15,9 @@ export default function App() {
         return false
       }
     }
-  });
+  }
+  const { defaultAlgorithm, darkAlgorithm } = theme;
+  const [isDarkMode, setIsDarkMode] = useState(() => checkDark());
   const [errCode, setErrCode] = useState('')
   const handleClick = () => {
     setIsDarkMode((previousValue) => !previousValue);
@@ -28,11 +29,11 @@ export default function App() {
       window.localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode))
   }, [isDarkMode])
   useEffect(() => {
-    if(localStorage.hasOwnProperty('isDarkMode')){
-      const darkMode = window.localStorage.getItem('isDarkMode')
-      if(darkMode === 'true') setIsDarkMode(true)
+    if(checkDark()){
+      setIsDarkMode(true)
     }
   },[])
+  
   return (
     <ConfigProvider
       theme={{
