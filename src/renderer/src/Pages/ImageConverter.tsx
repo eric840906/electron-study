@@ -1,19 +1,27 @@
 import { useEffect, useState } from 'react';
-import FileInput from '../components/FileInput';
+import FileInput from '../components/FileInput_M';
 import { Divider, Typography, Collapse } from 'antd';
 import ImageFormatForm from '../components/ImageFormatForm';
 import constants from 'main/constants';
 export default () => {
   const acceptType = 'image';
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<any|any[]>();
   const [outputType, setOutputType] = useState('.png');
   const [formatterOption, setFormatterOption] = useState({});
-  const onFileChange = (newFile: any) => {
+  const onFileChange = (newFile: any[]) => {
     if (!newFile || !newFile.length) {
       setFile(undefined);
     } else {
-      console.log(newFile[0].originFileObj);
-      setFile(newFile[0].originFileObj);
+      // console.log(newFile);
+      setFile(() => JSON.stringify(newFile.map(item => {
+        return {
+          name: item.originFileObj.name,
+          path: item.originFileObj.path,
+          size: item.originFileObj.size,
+          type: item.originFileObj.type
+        }
+
+      })));
     }
   };
   const onTypeChange = (newValue: string) => {
@@ -31,10 +39,10 @@ export default () => {
     const serilizedOption = JSON.stringify(formatterOption);
     window.electron.ipcRenderer.send(
       constants.event_keys.GET_INPUT_IMAGE,
-      file.path,
+      file,
       serilizedOption
     );
-    setFile(undefined);
+    // setFile(undefined);
   };
   const onCollapseChange = (key: string | string[]) => {
     console.log(key);

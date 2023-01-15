@@ -15,7 +15,7 @@ import log from 'electron-log'
 import MenuBuilder from './menu'
 import { resolveHtmlPath } from './util'
 import constants from './constants'
-import { convertVideo, convertImage } from './ffmpeg'
+import { convertVideo, convertMultiImages } from './ffmpeg'
 
 class AppUpdater {
   constructor () {
@@ -36,14 +36,9 @@ ipcMain.on(constants.event_keys.GET_INPUT_VIDEO, (event, ...arg) =>
   convertVideo(event, ...arg)
 )
 ipcMain.on(constants.event_keys.GET_INPUT_IMAGE, (event, ...arg) =>{
-  convertImage(event, ...arg)
+  convertMultiImages(event, ...arg)
   }
 )
-
-ipcMain.on(constants.event_keys.TEST, (event, arg) => {
-  console.log(arg)
-})
-
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support')
   sourceMapSupport.install()
