@@ -8,7 +8,6 @@ const ffmpegPath = require('ffmpeg-static')
 const ffprobePath = require('ffprobe-static')
 // //tell the ffmpeg package where it can find the needed binaries.
 ffmpeg.setFfmpegPath(ffmpegPath);
-console.log(ffmpegPath)
 ffmpeg.setFfprobePath(ffprobePath);
 const checkFolder = async(directory) => {
   try {
@@ -57,7 +56,7 @@ export const convertImage = async (event, ...args) => {
   ffmpeg(filePath)
   .on('error', function(err) {
     console.log('An error occurred: ' + err.message);
-    event.reply('image start', ffmpegPath)
+    // event.reply('image start', ffmpegPath)
   })
   .on('progress', function({ percent }) {
     console.log(`Processing: ${percent ? percent : 0} % done`);

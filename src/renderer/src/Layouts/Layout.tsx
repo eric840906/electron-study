@@ -42,10 +42,9 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
             <Button icon={<SettingOutlined />}></Button>
             <Switch
               onChange={onThemeChange}
-              checkedChildren="Light"
-              unCheckedChildren="Dark"
+              checkedChildren="☀️"
+              unCheckedChildren="🌙"
               defaultChecked={true}
-              style={{ width: 60 }}
             />
           </div>
         </Sider>
