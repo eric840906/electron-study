@@ -15,6 +15,6 @@ export default {
   event_keys: {
     GET_INPUT_VIDEO: 'GET_INPUT_VIDEO',
     GET_INPUT_IMAGE: 'GET_INPUT_IMAGE',
-    TEST: 'TEST'
+    CONVERSION_PROGRESS: 'CONVERSION_PROGRESS'
   }
 }
