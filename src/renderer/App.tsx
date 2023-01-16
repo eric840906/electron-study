@@ -22,9 +22,6 @@ export default function App() {
   const handleClick = () => {
     setIsDarkMode((previousValue) => !previousValue);
   };
-  window.electron.ipcRenderer.on('image start', (arg:any) => {
-    setErrCode(arg)
-  })
   useEffect(() =>{
       window.localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode))
   }, [isDarkMode])
@@ -33,7 +30,7 @@ export default function App() {
       setIsDarkMode(true)
     }
   },[])
-  
+
   return (
     <ConfigProvider
       theme={{

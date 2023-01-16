@@ -22,11 +22,30 @@ const checkFolder = async(directory) => {
       }
   }
 }
+
+const stderrHandler = (info, VideoDuration) => {
+  let progressMatch = info.match(/time=(\d+:\d+:\d+.\d+)/);
+  let durationMatch = info.match(/Duration: (\d+:\d+:\d+.\d+)/)
+  if (durationMatch) {
+    let parts = durationMatch[1].split(':')
+    VideoDuration.value = (parseInt(parts[0]) * 3600) + (parseInt(parts[1]) * 60) + parseFloat(parts[2])
+  }
+  if (progressMatch) {
+      let parts = progressMatch[1].split(':');
+      let totalSeconds = (parseInt(parts[0]) * 3600) + (parseInt(parts[1]) * 60) + parseFloat(parts[2]);
+      let percent = totalSeconds / VideoDuration.value * 100;
+      console.log(`Processing: ${percent.toFixed(2)} % done`);
+      return percent.toFixed(2)
+  }
+}
+
 export const convertVideo = async (event, ...args) => {
   const config = args[1]
   const filePath = args[0]
   const { fps, bitRate, size } = (JSON.parse(config))
   const { name } = path.parse(filePath)
+  const fullOutput = path.join(outputPath, `${name}.mp4`)
+  const duration = { value: undefined }
   console.log({name, fps, bitRate, size})
   checkFolder()
   ffmpeg(filePath)
@@ -38,26 +57,22 @@ export const convertVideo = async (event, ...args) => {
   .on('error', function(err) {
     console.log('An error occurred: ' + err.message);
   })
-  .on('progress', function({ percent }) {
-    console.log(`Processing: ${percent ? percent : 0} % done`);
-  })
+  .on('stderr', (info) => event.reply('progress', stderrHandler(info, duration)))
   .on('end', function() {
     console.log('Processing finished !');
+    event.reply('progress', 100)
   })
-  .save(`${outputPath}\\${name}.mp4`);
+  .save(fullOutput);
 }
 export const convertImage = async (event, ...args) => {
   const config = args[1]
   const filePath = args[0]
   const { outputType } = (JSON.parse(config))
   const { name } = path.parse(filePath)
+  let duration = undefined
   console.log(name, outputType)
   checkFolder()
   ffmpeg(filePath)
-  .on('error', function(err) {
-    console.log('An error occurred: ' + err.message);
-    // event.reply('image start', ffmpegPath)
-  })
   .on('progress', function({ percent }) {
     console.log(`Processing: ${percent ? percent : 0} % done`);
   })
@@ -68,17 +83,6 @@ export const convertImage = async (event, ...args) => {
   .save(`${outputPath}\\${name}${outputType}`);
 }
 
-const covertionReducer = (config, filePath) => {
-  const { outputType } = (JSON.parse(config))
-  const input = filePath.reduce((result, input) => {
-    const { name } = path.parse(input)
-    return result.addInput(input)
-  }, ffmpeg())
-  const output = filePath.reduce((result, input) => {
-    return save(`${outputPath}\\${input}${outputType}`)
-  })
-  
-}
 
 export const convertMultiImages = async (event, ...args) => {
   const config = args[1]
@@ -87,21 +91,26 @@ export const convertMultiImages = async (event, ...args) => {
   console.log(filePath)
   const input = (inputFiles) => inputFiles.map((inputFile) => {
     const name = inputFile.name.split('.')[0]
-    const path = inputFile.path
+    const filePath = inputFile.path
+    const fullOutput = path.join(outputPath, `${name}${outputType}`)
     return ffmpeg()
-    .addInput(path)
+    .addInput(filePath)
     // .on('error', function(err) {
     //   console.log('An error occurred: ' + err.message);
     //   // event.reply('image start', ffmpegPath)
     // })
-    .on('progress', function({ percent }) {
-      console.log(`Processing: ${percent ? percent : 0} % done`);
-    })
+    // .on('progress', function({ percent }) {
+    //   console.log(`Processing: ${percent ? percent : 0} % done`);
+    // })
+    // .on('progress', function(info) {
+    //   console.log(info);
+    // })
+    // .on('stderr', (info) => console.log(info))
     // .on('end', function() {
     //   console.log('Processing finished !');
     //   // event.reply('image complete', `${outputPath}\\${name}${outputType}`)
     // })
-    .output(`${outputPath}\\${name}${outputType}`)
+    .output(fullOutput)
   })
   const ffpmegProcess = input(filePath)
   try {

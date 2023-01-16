@@ -5,6 +5,7 @@ import Home from '../Pages/Home';
 import VideoCompresser from '../Pages/VideoCompresser';
 import ImageConverter from '../Pages/ImageConverter';
 import SideMenu from '../components/Menu';
+import ProgressBar from '../components/ProgressBar';
 
 const { Header, Footer, Sider, Content } = Layout;
 const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
@@ -54,7 +55,7 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
               background: `${isDark ? '#141414' : 'white'}`,
             }}
           >
-            
+
           </Header>
           <Content style={{ margin:10, padding: '24px 16px 0', overflowY:'auto' }}>
             <Routes>
@@ -73,7 +74,7 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
               background: `${isDark ? '#141414' : 'white'}`,
             }}
           >
-            Footer
+            <ProgressBar/>
           </Footer>
         </Layout>
       </Layout>
