@@ -78,7 +78,7 @@ const configuration: webpack.Configuration = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: `node_modules/ffmpeg-static-electron/bin/${platform}/${os.arch()}/ffmpeg.exe`, to: './' },
+        { from: `node_modules/ffmpeg-static/ffmpeg`, to: './' },
       ],
     }),
   ],
