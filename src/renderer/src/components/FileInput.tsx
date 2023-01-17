@@ -2,7 +2,13 @@ import constants from 'main/constants';
 import { Button, Input, Typography, Form, message, Upload } from 'antd';
 import { ReloadOutlined, FileAddOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  converting,
+  convertDone,
+  selectConvertState,
+} from '../store/convertingSlice';
 const { Paragraph } = Typography;
 const { Dragger } = Upload;
 const FileInput: React.FC<{
@@ -10,15 +16,16 @@ const FileInput: React.FC<{
   sendFilePath: any;
   accept: string;
 }> = ({ onFileChange, sendFilePath, accept }) => {
-  const [buttonActive, setButtonActive] = useState(true);
+  const isConverting = useSelector(selectConvertState);
+  const dispatch = useDispatch();
   useEffect(() => {
     window.electron.ipcRenderer.on(
       constants.event_keys.CONVERSION_PROGRESS,
       (arg) => {
         if (arg === 100) {
-          setButtonActive(true);
+          dispatch(convertDone());
         } else {
-          setButtonActive(false);
+          dispatch(converting());
         }
       }
     );
@@ -54,7 +61,7 @@ const FileInput: React.FC<{
       </Dragger>
 
       <Button
-        disabled={!buttonActive}
+        disabled={isConverting}
         className="button-convert"
         onClick={() => sendFilePath()}
         style={{ marginTop: 20 }}

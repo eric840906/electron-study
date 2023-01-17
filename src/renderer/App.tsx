@@ -4,6 +4,8 @@ import { ConfigProvider, theme, message } from 'antd';
 import type { MenuTheme } from 'antd';
 import './App.css';
 import MainLayout from './src/Layouts/Layout';
+import { store } from './src/store';
+import { Provider } from 'react-redux';
 
 export default function App() {
   const checkDark = () => {
@@ -32,14 +34,16 @@ export default function App() {
   }, []);
 
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
-      }}
-    >
-      <Router>
-        <MainLayout isDark={isDarkMode} onThemeChange={handleClick} />
-      </Router>
-    </ConfigProvider>
+    <Provider store={store}>
+      <ConfigProvider
+        theme={{
+          algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
+        }}
+      >
+        <Router>
+          <MainLayout isDark={isDarkMode} onThemeChange={handleClick} />
+        </Router>
+      </ConfigProvider>
+    </Provider>
   );
 }
