@@ -57,7 +57,7 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
           >
 
           </Header>
-          <Content style={{ margin:10, padding: '24px 16px 0', overflowY:'auto' }}>
+          <Content style={{ margin:10, padding: 10, overflowY:'auto' }}>
             <Routes>
               <Route
                 path="/"

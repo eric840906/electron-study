@@ -1,8 +1,10 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import convertingReducer from './convertingSlice'
+import imageReducer from './imageSlice'
 
 const rootReducer = combineReducers({
-  convertingReducer
+  convertingReducer,
+  imageReducer
 })
 
 const store = configureStore({

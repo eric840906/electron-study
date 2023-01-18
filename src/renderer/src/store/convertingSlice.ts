@@ -16,4 +16,4 @@ const convertingSlice = createSlice({
 })
 export const selectConvertState = (state: any) => state.convertingReducer.value
 export const { converting, convertDone } = convertingSlice.actions
-export default convertingSlice.reducer as any
+export default convertingSlice.reducer
