@@ -28,7 +28,8 @@ function getItem(
 
 const SideMenu: React.FC<{
   onThemeChange: any;
-}> = ({ onThemeChange }) => {
+  onLoginClick: any
+}> = ({ onThemeChange, onLoginClick }) => {
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
   };
@@ -55,7 +56,7 @@ const SideMenu: React.FC<{
       'Account',
       'grp',
       null,
-      [getItem('Log in', '13', <LoginOutlined />)],
+      [getItem(<a onClick={() => onLoginClick(true)}>Log in</a>, '13', <LoginOutlined />)],
       'group'
     ),
   ];

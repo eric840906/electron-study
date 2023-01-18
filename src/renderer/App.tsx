@@ -1,6 +1,6 @@
 import { MemoryRouter as Router } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { ConfigProvider, theme, message } from 'antd';
+import { ConfigProvider, theme, message, Modal } from 'antd';
 import type { MenuTheme } from 'antd';
 import './App.css';
 import MainLayout from './src/Layouts/Layout';
@@ -8,6 +8,21 @@ import { store } from './src/store';
 import { Provider } from 'react-redux';
 
 export default function App() {
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState('Content of the modal');
+  const handleOk = () => {
+    setModalText('The modal will be closed after two seconds');
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
   const checkDark = () => {
     if (localStorage.hasOwnProperty('isDarkMode')) {
       const darkMode = window.localStorage.getItem('isDarkMode');
@@ -41,7 +56,16 @@ export default function App() {
         }}
       >
         <Router>
-          <MainLayout isDark={isDarkMode} onThemeChange={handleClick} />
+          <MainLayout onLoginClick={setOpen} isDark={isDarkMode} onThemeChange={handleClick} />
+          <Modal
+            title="Title"
+            open={open}
+            onOk={handleOk}
+            confirmLoading={confirmLoading}
+            onCancel={handleCancel}
+          >
+        <p>{modalText}</p>
+      </Modal>
         </Router>
       </ConfigProvider>
     </Provider>

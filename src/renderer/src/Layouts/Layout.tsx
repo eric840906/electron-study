@@ -8,9 +8,10 @@ import SideMenu from '../components/Menu';
 import ProgressBar from '../components/ProgressBar';
 
 const { Header, Footer, Sider, Content } = Layout;
-const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
+const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any }> = ({
   isDark,
   onThemeChange,
+  onLoginClick
 }) => {
   return (
     <>
@@ -25,7 +26,7 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any }> = ({
             flexDirection: 'column',
           }}
         >
-          <SideMenu onThemeChange={onThemeChange} />
+          <SideMenu onLoginClick={onLoginClick} onThemeChange={onThemeChange} />
           <div
             style={{
               position: 'absolute',
