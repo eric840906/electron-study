@@ -1,5 +1,5 @@
 import constants from 'main/constants';
-import { Button, Input, Typography, Form, message, Upload } from 'antd';
+import { Button, Upload } from 'antd';
 import { ReloadOutlined, FileAddOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import React, { useEffect } from 'react';
@@ -9,7 +9,6 @@ import {
   convertDone,
   selectConvertState,
 } from '../store/convertingSlice';
-const { Paragraph } = Typography;
 const { Dragger } = Upload;
 const FileInput: React.FC<{
   onFileChange: any;
@@ -30,10 +29,13 @@ const FileInput: React.FC<{
       }
     );
   }, []);
+  const multiple = accept.includes('image') ? true : false
+  const maxCount = multiple ? 100 : 1
   const props: UploadProps = {
     name: 'file',
     accept: `${accept}`,
-    multiple: false,
+    multiple,
+    maxCount,
     onChange(info) {
       console.log(info.file, info.fileList);
       onFileChange(info.fileList);
@@ -63,7 +65,7 @@ const FileInput: React.FC<{
       <Button
         disabled={isConverting}
         className="button-convert"
-        onClick={() => sendFilePath()}
+        onClick={sendFilePath}
         style={{ marginTop: 20 }}
         icon={<ReloadOutlined />}
       >

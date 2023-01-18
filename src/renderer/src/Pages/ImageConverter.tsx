@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import FileInput from '../components/FileInput_M';
+import FileInput from '../components/FileInput';
 import { Divider, Typography, Collapse } from 'antd';
 import ImageFormatForm from '../components/ImageFormatForm';
 import constants from 'main/constants';
@@ -9,20 +9,7 @@ export default () => {
   const [outputType, setOutputType] = useState('.png');
   const [formatterOption, setFormatterOption] = useState({});
   const onFileChange = (newFile: any[]) => {
-    if (!newFile || !newFile.length) {
-      setFile(undefined);
-    } else {
-      // console.log(newFile);
-      setFile(() => JSON.stringify(newFile.map(item => {
-        return {
-          name: item.originFileObj.name,
-          path: item.originFileObj.path,
-          size: item.originFileObj.size,
-          type: item.originFileObj.type
-        }
-
-      })));
-    }
+    setFile(newFile)
   };
   const onTypeChange = (newValue: string) => {
     setOutputType(newValue);
@@ -34,12 +21,20 @@ export default () => {
   }, [outputType]);
   const sendFilePath = () => {
     if (!file) return;
-    console.log(file);
+    const fileArr = JSON.stringify(file.map((item: { originFileObj: { name: any; path: any; size: any; type: any; }; }) => {
+      return {
+          name: item.originFileObj.name,
+          path: item.originFileObj.path,
+          size: item.originFileObj.size,
+          type: item.originFileObj.type
+      }
+    }))
+    console.log(fileArr);
     console.log(formatterOption);
     const serilizedOption = JSON.stringify(formatterOption);
     window.electron.ipcRenderer.send(
       constants.event_keys.GET_INPUT_IMAGE,
-      file,
+      fileArr,
       serilizedOption
     );
     // setFile(undefined);
