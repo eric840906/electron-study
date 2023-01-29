@@ -4,6 +4,7 @@ import { ConfigProvider, theme, message, Modal } from 'antd';
 import type { MenuTheme } from 'antd';
 import './App.css';
 import MainLayout from './src/Layouts/Layout';
+import LoginForm from './src/components/LoginForm';
 import { store } from './src/store';
 import { Provider } from 'react-redux';
 
@@ -35,7 +36,6 @@ export default function App() {
   };
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [isDarkMode, setIsDarkMode] = useState(() => checkDark());
-  const [errCode, setErrCode] = useState('');
   const handleClick = () => {
     setIsDarkMode((previousValue) => !previousValue);
   };
@@ -57,15 +57,7 @@ export default function App() {
       >
         <Router>
           <MainLayout onLoginClick={setOpen} isDark={isDarkMode} onThemeChange={handleClick} />
-          <Modal
-            title="Title"
-            open={open}
-            onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
-          >
-        <p>{modalText}</p>
-      </Modal>
+            <LoginForm onOpen={open} onCancel={handleCancel}/>
         </Router>
       </ConfigProvider>
     </Provider>

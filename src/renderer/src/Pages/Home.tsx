@@ -1,10 +1,10 @@
-import { Button } from 'antd';
-import constant from 'main/constants';
+import { Image } from 'antd';
+import opening from '../../../../assets/images/1674093337907.png';
 
 const Home: React.FC<{ onThemeChange: any }> = ({ onThemeChange }: any) => {
   return (
     <>
-      <Button onClick={() => onThemeChange()}>test button</Button>
+      <Image src={opening} />
     </>
   );
 };
