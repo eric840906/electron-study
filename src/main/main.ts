@@ -9,13 +9,15 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path'
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, ipcRenderer } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
 import MenuBuilder from './menu'
 import { resolveHtmlPath } from './util'
 import constants from './constants'
 import { convertVideo, convertMultiImages } from './ffmpeg'
+const { dialog } = require('electron')
+const fs = require('fs/promises')
 
 class AppUpdater {
   constructor () {
@@ -39,6 +41,35 @@ ipcMain.on(constants.event_keys.GET_INPUT_IMAGE, (event, ...arg) =>{
   convertMultiImages(event, ...arg)
   }
 )
+ipcMain.on(constants.event_keys.SHOW_DIRECTORY_DIALOG, async(event) => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ['openDirectory'] })
+  if(canceled) return
+  const selectedPath = filePaths[0]
+  event.reply(constants.event_keys.PATH_SELECTED, selectedPath)
+})
+ipcMain.on(constants.event_keys.PATH_CONFIRN, async(event, args) => {
+  console.log(args)
+  let jsonInfo = {
+    output: args
+  }
+  const configPath = path.join(__dirname, '..', '..', 'config');
+  try {
+    await fs.stat(configPath);
+    console.log(`${configPath} already exists`);
+    await fs.writeFile(`${configPath}/config.json`, JSON.stringify(jsonInfo))
+  } catch (err:any) {
+    if (err.code === 'ENOENT') {
+      await fs.mkdir(configPath);
+      console.log(`${configPath} created`);
+      await fs.writeFile(`${configPath}/config.json`, JSON.stringify(jsonInfo))
+      // const config = await fs.readFile(`${configPath}/config.json`);
+      // const outputPath = JSON.parse(config);
+      // console.log(outputPath)
+    } else {
+      throw err;
+    }
+  }
+})
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support')
   sourceMapSupport.install()

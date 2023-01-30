@@ -1,7 +1,9 @@
 import constants from './constants';
 const fs = require('fs').promises;
 const path = require('path');
-const outputPath = path.join(__dirname, '..', '..', 'output');
+const configPath = path.join(__dirname, '..', '..', 'config');
+// const outputPath = path.join(__dirname, '..', '..', 'output');
+let outputPath;
 //require the ffmpeg package so we can use ffmpeg using JS
 const ffmpeg = require('fluent-ffmpeg');
 // //Get the paths to the packaged versions of the binaries we want to use
@@ -10,14 +12,30 @@ const ffprobePath = require('ffprobe-static');
 // //tell the ffmpeg package where it can find the needed binaries.
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
+// const checkFolder = async (directory) => {
+//   try {
+//     await fs.stat(outputPath);
+//     console.log(`${outputPath} already exists`);
+//     console.log(outputPath)
+//   } catch (err) {
+//     if (err.code === 'ENOENT') {
+//       await fs.mkdir(outputPath);
+//       console.log(`${outputPath} created`);
+//     } else {
+//       throw err;
+//     }
+//   }
+// };
+
 const checkFolder = async (directory) => {
   try {
-    await fs.stat(outputPath);
-    console.log(`${outputPath} already exists`);
+    const config = await fs.readFile(`${configPath}/config.json`);
+    outputPath = JSON.parse(config).output;
   } catch (err) {
     if (err.code === 'ENOENT') {
       await fs.mkdir(outputPath);
       console.log(`${outputPath} created`);
+      outputPath = JSON.parse(config).output;
     } else {
       throw err;
     }
@@ -51,10 +69,10 @@ export const convertVideo = async (event, ...args) => {
   const filePath = args[0];
   const { fps, bitRate, size } = JSON.parse(config);
   const { name } = path.parse(filePath);
-  const fullOutput = path.join(outputPath, `${name}.mp4`);
   const duration = { value: undefined };
   console.log({ name, fps, bitRate, size });
-  checkFolder();
+  await checkFolder();
+  const fullOutput = path.join(outputPath, `${name}.mp4`);
   ffmpeg(filePath)
     .videoCodec('libx264')
     .audioCodec('libmp3lame')
@@ -115,7 +133,8 @@ export const convertMultiImages = async (event, ...args) => {
   const { outputType } = JSON.parse(config);
   const imageCount = fileArr.length;
   let processCount = 0;
-  checkFolder();
+  await checkFolder();
+  console.log(outputPath)
   fileArr.forEach(async (file) => {
     const fullOutput = path.join(
       outputPath,
@@ -135,60 +154,8 @@ export const convertMultiImages = async (event, ...args) => {
           progress.toFixed(2)
         );
       }
-      // console.log(`${progress.toFixed(2)}%`)
     } catch (error) {
       console.log(error.message);
     }
-    // ffmpeg(file.path).on('end', () => {
-    //   processCount++
-    //   console.log(`${processCount}/${imageCount} processed`)
-    //   const progress = (processCount/imageCount)*100
-    //   console.log(`${progress.toFixed(2)}%`)
-    // }).save(fullOutput)
   });
-  // const input = (inputFiles) => inputFiles.map((inputFile) => {
-  //   const name = inputFile.name.split('.')[0]
-  //   const filePath = inputFile.path
-  //   const fullOutput = path.join(outputPath, `${name}${outputType}`)
-  //   return ffmpeg()
-  // .addInput(filePath)
-  // .on('error', function(err) {
-  //   console.log('An error occurred: ' + err.message);
-  //   // event.reply('image start', ffmpegPath)
-  // })
-  // .on('progress', function({ percent }) {
-  //   console.log(`Processing: ${percent ? percent : 0} % done`);
-  // })
-  // .on('progress', function(info) {
-  //   console.log(info);
-  // })
-  // .on('stderr', (info) => console.log(info))
-  // .on('end', function() {
-  //   console.log('Processing finished !');
-  //   // event.reply('image complete', `${outputPath}\\${name}${outputType}`)
-  // })
-  // .output(fullOutput)
-  // })
-  // const ffpmegProcess = input(filePath)
-  // try {
-  //   Promise.all(ffpmegProcess.forEach((item,i) =>{
-  //     console.log(i)
-  //     console.log(item)
-  //     item.run()
-  //   }))
-  // } catch (error) {
-  //   console.log(error.message)
-  // }
-  // Promise.allSettled(ffpmegProcess.forEach(item =>item.run())).then((results) => {
-  //   results.forEach((result,index) => {
-  //     if (result.status === 'fulfilled') {
-  //       console.log(`image${index+1} converted successfully!`);
-  //     } else {
-  //       console.log(`image${index+1} failed: `, result.reason);
-  //     }
-  //   });
-  // })
-  // .catch(err => {
-  //   console.error(err);
-  // });
 };

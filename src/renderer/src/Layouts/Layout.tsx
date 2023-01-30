@@ -8,10 +8,11 @@ import SideMenu from '../components/Menu';
 import ProgressBar from '../components/ProgressBar';
 
 const { Header, Footer, Sider, Content } = Layout;
-const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any }> = ({
+const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any, onConfigClick: any }> = ({
   isDark,
   onThemeChange,
-  onLoginClick
+  onLoginClick,
+  onConfigClick
 }) => {
   return (
     <>
@@ -37,7 +38,7 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any }
               gap: 10,
             }}
           >
-            <Button icon={<SettingOutlined />}></Button>
+            <Button onClick={onConfigClick} icon={<SettingOutlined />}></Button>
             <Switch
               checked={!isDark}
               onChange={onThemeChange}

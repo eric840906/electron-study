@@ -5,24 +5,30 @@ import type { MenuTheme } from 'antd';
 import './App.css';
 import MainLayout from './src/Layouts/Layout';
 import LoginForm from './src/components/LoginForm';
+import ConfigForm from './src/components/ConfigForm';
 import { store } from './src/store';
 import { Provider } from 'react-redux';
 
 export default function App() {
-  const [open, setOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [configOpen, setConfigOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('Content of the modal');
   const handleOk = () => {
     setModalText('The modal will be closed after two seconds');
     setConfirmLoading(true);
     setTimeout(() => {
-      setOpen(false);
+      setLoginOpen(false);
       setConfirmLoading(false);
     }, 2000);
   };
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-    setOpen(false);
+  const handleLoginCancel = () => {
+    console.log('Clicked login cancel button');
+    setLoginOpen(false);
+  };
+  const handleConfigCancel = () => {
+    console.log('Clicked config cancel button');
+    setConfigOpen(false);
   };
   const checkDark = () => {
     if (localStorage.hasOwnProperty('isDarkMode')) {
@@ -56,8 +62,9 @@ export default function App() {
         }}
       >
         <Router>
-          <MainLayout onLoginClick={setOpen} isDark={isDarkMode} onThemeChange={handleClick} />
-            <LoginForm onOpen={open} onCancel={handleCancel}/>
+          <MainLayout onLoginClick={setLoginOpen} onConfigClick={setConfigOpen} isDark={isDarkMode} onThemeChange={handleClick} />
+            <LoginForm onOpen={loginOpen} onCancel={handleLoginCancel}/>
+            <ConfigForm onOpen={configOpen} onCancel={handleConfigCancel}/>
         </Router>
       </ConfigProvider>
     </Provider>
