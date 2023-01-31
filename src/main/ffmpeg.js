@@ -27,15 +27,28 @@ ffmpeg.setFfprobePath(ffprobePath);
 //   }
 // };
 
-const checkFolder = async (directory) => {
+// const checkFolder = async (event) => {
+//   try {
+//     const config = await fs.readFile(`${configPath}/config.json`);
+//     outputPath = JSON.parse(config).output;
+//   } catch (err) {
+//     if (err.code === 'ENOENT') {
+//       await fs.mkdir(outputPath);
+//       console.log(`${outputPath} created`);
+//       outputPath = JSON.parse(config).output;
+//     } else {
+//       throw err;
+//     }
+//   }
+// };
+const checkFolder = async (event) => {
   try {
     const config = await fs.readFile(`${configPath}/config.json`);
     outputPath = JSON.parse(config).output;
   } catch (err) {
+    console.log(err.code)
     if (err.code === 'ENOENT') {
-      await fs.mkdir(outputPath);
-      console.log(`${outputPath} created`);
-      outputPath = JSON.parse(config).output;
+      event.reply('need-output', '看起來你還沒有設定輸出位置')
     } else {
       throw err;
     }
@@ -71,7 +84,7 @@ export const convertVideo = async (event, ...args) => {
   const { name } = path.parse(filePath);
   const duration = { value: undefined };
   console.log({ name, fps, bitRate, size });
-  await checkFolder();
+  await checkFolder(event);
   const fullOutput = path.join(outputPath, `${name}.mp4`);
   ffmpeg(filePath)
     .videoCodec('libx264')
@@ -133,7 +146,7 @@ export const convertMultiImages = async (event, ...args) => {
   const { outputType } = JSON.parse(config);
   const imageCount = fileArr.length;
   let processCount = 0;
-  await checkFolder();
+  await checkFolder(event);
   console.log(outputPath)
   fileArr.forEach(async (file) => {
     const fullOutput = path.join(

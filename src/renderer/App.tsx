@@ -8,8 +8,10 @@ import LoginForm from './src/components/LoginForm';
 import ConfigForm from './src/components/ConfigForm';
 import { store } from './src/store';
 import { Provider } from 'react-redux';
+import useNotice from './src/hooks/useNotice';
 
 export default function App() {
+  const [noticeInput, contextHolder] = useNotice();
   const [loginOpen, setLoginOpen] = useState(false);
   const [configOpen, setConfigOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -53,9 +55,16 @@ export default function App() {
       setIsDarkMode(true);
     }
   }, []);
+  useEffect(() => {
+    window.electron.ipcRenderer.on('need-output', (args:any) => {
+      noticeInput('info', args)
+      setConfigOpen(true)
+    })
+  }, [])
 
   return (
     <Provider store={store}>
+      {contextHolder}
       <ConfigProvider
         theme={{
           algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
