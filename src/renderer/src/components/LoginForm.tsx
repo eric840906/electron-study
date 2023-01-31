@@ -1,8 +1,12 @@
-import React from 'react';
+import { useState } from 'react';
 import { Button, Checkbox, Form, Input, Modal } from 'antd';
 import { text } from 'stream/consumers';
+import useLogin from '../hooks/useLogin';
 
 const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) => {
+  const [login] = useLogin()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const onFinish = (values: any) => {
     console.log('Success:', values);
   };
@@ -10,12 +14,15 @@ const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) =
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+  const handleOk = () => {
+    login(email, password)
+  }
 
   return (
     <Modal
       title="還沒做完的登入功能"
       open={onOpen}
-      // onOk={handleOk}
+      onOk={handleOk}
       // confirmLoading={confirmLoading}
       onCancel={onCancel}
       cancelText="取消"
@@ -40,7 +47,7 @@ const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) =
           rules={[{ required: true, message: 'Please input your username!' }]}
 
         >
-          <Input />
+          <Input value={email} onChange={e => setEmail(e.target.value)} />
         </Form.Item>
 
         <Form.Item
@@ -48,22 +55,8 @@ const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) =
           name="password"
           rules={[{ required: true, message: 'Please input your password!' }]}
         >
-          <Input.Password />
+          <Input.Password value={password} onChange={e => setPassword(e.target.value)}/>
         </Form.Item>
-
-        {/* <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item> */}
-
-        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item> */}
       </Form>
       </div>
     </Modal>
