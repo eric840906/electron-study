@@ -9,6 +9,7 @@ import ConfigForm from './src/components/ConfigForm';
 import { store } from './src/store';
 import { Provider } from 'react-redux';
 import useNotice from './src/hooks/useNotice';
+import constants from 'main/constants';
 
 export default function App() {
   const [noticeInput, contextHolder] = useNotice();
@@ -56,7 +57,7 @@ export default function App() {
     }
   }, []);
   useEffect(() => {
-    window.electron.ipcRenderer.on('need-output', (args:any) => {
+    window.electron.ipcRenderer.on(constants.event_keys.OUTPUT_WARNING, (args:any) => {
       noticeInput('info', args)
       setConfigOpen(true)
     })

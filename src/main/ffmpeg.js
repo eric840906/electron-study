@@ -2,7 +2,6 @@ import constants from './constants';
 const fs = require('fs').promises;
 const path = require('path');
 const configPath = path.join(__dirname, '..', '..', 'config');
-// const outputPath = path.join(__dirname, '..', '..', 'output');
 let outputPath;
 //require the ffmpeg package so we can use ffmpeg using JS
 const ffmpeg = require('fluent-ffmpeg');
@@ -12,35 +11,6 @@ const ffprobePath = require('ffprobe-static');
 // //tell the ffmpeg package where it can find the needed binaries.
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
-// const checkFolder = async (directory) => {
-//   try {
-//     await fs.stat(outputPath);
-//     console.log(`${outputPath} already exists`);
-//     console.log(outputPath)
-//   } catch (err) {
-//     if (err.code === 'ENOENT') {
-//       await fs.mkdir(outputPath);
-//       console.log(`${outputPath} created`);
-//     } else {
-//       throw err;
-//     }
-//   }
-// };
-
-// const checkFolder = async (event) => {
-//   try {
-//     const config = await fs.readFile(`${configPath}/config.json`);
-//     outputPath = JSON.parse(config).output;
-//   } catch (err) {
-//     if (err.code === 'ENOENT') {
-//       await fs.mkdir(outputPath);
-//       console.log(`${outputPath} created`);
-//       outputPath = JSON.parse(config).output;
-//     } else {
-//       throw err;
-//     }
-//   }
-// };
 const checkFolder = async (event) => {
   try {
     const config = await fs.readFile(`${configPath}/config.json`);
@@ -48,7 +18,7 @@ const checkFolder = async (event) => {
   } catch (err) {
     console.log(err.code)
     if (err.code === 'ENOENT') {
-      event.reply('need-output', '看起來你還沒有設定輸出位置')
+      event.reply(constants.event_keys.OUTPUT_WARNING, '看起來你還沒有設定輸出位置')
     } else {
       throw err;
     }
@@ -94,7 +64,6 @@ export const convertVideo = async (event, ...args) => {
     .size(size)
     .on('error', function (err) {
       console.log('An error occurred: ' + err.message);
-      event.reply('error', err.message);
     })
     .on('stderr', (info) =>
       event.reply(
