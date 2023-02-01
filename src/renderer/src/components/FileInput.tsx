@@ -59,7 +59,7 @@ const FileInput: React.FC<{
         <p className="ant-upload-drag-icon">
           <FileAddOutlined />
         </p>
-        <p className="ant-upload-text">Drag or click to select file</p>
+        <p className="ant-upload-text">拖曳或點擊選擇檔案</p>
       </Dragger>
 
       <Button

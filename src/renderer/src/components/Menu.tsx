@@ -54,23 +54,29 @@ const SideMenu: React.FC<{
       'brand'
     ),
     getItem(
-      <Link to="/video">Convert videos</Link>,
-      'sub1',
-      <VideoCameraOutlined />
-    ),
-
-    getItem(
-      <Link to="/image">Convert images</Link>,
-      'sub2',
-      <FileImageOutlined />
-    ),
-
-    getItem(
-      'Account',
-      'grp',
+      '主要功能',
+      'main',
       null,
       [
-        getItem(<a onClick={accountControl}> {userName === 'Guest' ? 'Log in' : 'Log out'}</a>, '13', userName === 'Guest' ? <LoginOutlined /> : <LogoutOutlined />),
+        getItem(
+          <Link to="/video">影片轉檔</Link>,
+          'sub1',
+          <VideoCameraOutlined />
+        ),
+        getItem(
+          <Link to="/image">圖片轉檔</Link>,
+          'sub2',
+          <FileImageOutlined />
+        )
+      ],
+      'group'
+    ),
+    getItem(
+      '使用者',
+      'account',
+      null,
+      [
+        getItem(<a onClick={accountControl}> {userName === 'Guest' ? '登入' : '登出'}</a>, '13', userName === 'Guest' ? <LoginOutlined /> : <LogoutOutlined />),
       ],
       'group'
     ),
