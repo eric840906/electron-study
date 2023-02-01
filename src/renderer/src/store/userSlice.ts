@@ -7,16 +7,14 @@ const userSlice = createSlice({
   },
   reducers: {
     userLogin: (state, action) => {
-      // state.value = action.payload
-      console.log('login')
-      // console.log(action)
-      // console.log(state)
+      state.value = action.payload.data
     },
     userLogout: (state) => {
+      console.log('logout')
       state.value = {}
     }
   }
 })
-export const selectConvertState = (state: any) => state.userSlice.value
+export const selectUserState = (state: any) => state.userReducer.value
 export const { userLogin, userLogout } = userSlice.actions
 export default userSlice.reducer

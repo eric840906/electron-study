@@ -6,6 +6,10 @@ import VideoCompresser from '../Pages/VideoCompresser';
 import ImageConverter from '../Pages/ImageConverter';
 import SideMenu from '../components/Menu';
 import ProgressBar from '../components/ProgressBar';
+import UserName from '../components/UserName';
+import { useSelector } from 'react-redux';
+import { selectUserState } from '../store/userSlice';
+import { useEffect, useState } from 'react';
 
 const { Header, Footer, Sider, Content } = Layout;
 const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any, onConfigClick: any }> = ({
@@ -14,6 +18,15 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any, 
   onLoginClick,
   onConfigClick
 }) => {
+  const userName = useSelector(selectUserState)
+  const [name, setName] = useState('Guest')
+  useEffect(() => {
+    if(userName && Object.keys(userName).length > 0) {
+      setName(userName.username)
+    } else {
+      setName('Guest')
+    }
+  },[userName])
   return (
     <>
       <Layout style={{height: '100vh'}}>
@@ -27,7 +40,7 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any, 
             flexDirection: 'column',
           }}
         >
-          <SideMenu onLoginClick={onLoginClick} onThemeChange={onThemeChange} />
+          <SideMenu userName={name} onLoginClick={onLoginClick} onThemeChange={onThemeChange} />
           <div
             style={{
               position: 'absolute',
@@ -51,13 +64,14 @@ const MainLayout: React.FC<{ isDark: any; onThemeChange: any, onLoginClick:any, 
         <Layout>
           <Header
             style={{
-              textAlign: 'center',
-              padding: 0,
+              textAlign: 'right',
+              padding: '0px 1rem',
               color: `${isDark ? 'white' : '#141414'}`,
               background: `${isDark ? '#141414' : 'white'}`,
             }}
           >
-
+          <UserName name={name}/>
+          {/* {userName ? <UserName name={userName.email}/> : <UserName name='Guest'/>} */}
           </Header>
           <Content style={{ margin:10, padding: 10, overflowY:'auto' }}>
             <Routes>

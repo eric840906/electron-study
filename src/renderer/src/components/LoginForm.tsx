@@ -1,12 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Checkbox, Form, Input, Modal } from 'antd';
 import { text } from 'stream/consumers';
 import useLogin from '../hooks/useLogin';
 
 const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) => {
-  const [login] = useLogin()
+  const {login, loading, success} = useLogin()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  useEffect(() => {
+    if(loading === true) {
+      setConfirmLoading(true)
+    } else {
+      setConfirmLoading(false)
+    }
+  }, [loading])
+  useEffect(() => {
+    if(success === true) {
+      onCancel()
+    }
+  }, [success])
   const onFinish = (values: any) => {
     console.log('Success:', values);
   };
@@ -20,10 +33,10 @@ const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) =
 
   return (
     <Modal
-      title="還沒做完的登入功能"
+      title="登入"
       open={onOpen}
       onOk={handleOk}
-      // confirmLoading={confirmLoading}
+      confirmLoading={confirmLoading}
       onCancel={onCancel}
       cancelText="取消"
       okText='登入'

@@ -2,11 +2,15 @@ import {
   FileImageOutlined,
   VideoCameraOutlined,
   LoginOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import icon from '../../../../assets/images/20078.svg';
 import { Menu, Switch } from 'antd';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUserState } from '../store/userSlice';
+import { userLogout } from "../store/userSlice";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -28,11 +32,20 @@ function getItem(
 
 const SideMenu: React.FC<{
   onThemeChange: any;
-  onLoginClick: any
-}> = ({ onThemeChange, onLoginClick }) => {
+  onLoginClick: any;
+  userName: any
+}> = ({ onThemeChange, onLoginClick, userName }) => {
+  const dispatch = useDispatch()
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
   };
+  const accountControl = () => {
+    if(userName === 'Guest') {
+      onLoginClick(true)
+    } else {
+      dispatch(userLogout())
+    }
+  }
   const items: MenuProps['items'] = [
     getItem(
       <Link to="/">
@@ -56,7 +69,9 @@ const SideMenu: React.FC<{
       'Account',
       'grp',
       null,
-      [getItem(<a onClick={() => onLoginClick(true)}>Log in</a>, '13', <LoginOutlined />)],
+      [
+        getItem(<a onClick={accountControl}> {userName === 'Guest' ? 'Log in' : 'Log out'}</a>, '13', userName === 'Guest' ? <LoginOutlined /> : <LogoutOutlined />),
+      ],
       'group'
     ),
   ];
