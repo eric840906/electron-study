@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUserState } from '../store/userSlice';
 import { userLogout } from "../store/userSlice";
+import useNotice from '../hooks/useNotice';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -35,6 +36,7 @@ const SideMenu: React.FC<{
   onLoginClick: any;
   userName: any
 }> = ({ onThemeChange, onLoginClick, userName }) => {
+  const [noticeInput, contextHolder] = useNotice()
   const dispatch = useDispatch()
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
@@ -44,6 +46,7 @@ const SideMenu: React.FC<{
       onLoginClick(true)
     } else {
       dispatch(userLogout())
+      noticeInput('success', '登出成功')
     }
   }
   const items: MenuProps['items'] = [
@@ -83,6 +86,7 @@ const SideMenu: React.FC<{
   ];
   return (
     <>
+      {contextHolder}
       <Menu
         onClick={onClick}
         style={{

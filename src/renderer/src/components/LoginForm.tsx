@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Button, Checkbox, Form, Input, Modal } from 'antd';
-import { text } from 'stream/consumers';
+import { Form, Input, Modal, notification } from 'antd';
 import useLogin from '../hooks/useLogin';
 
 const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) => {
+  const [api, contextHolder] = notification.useNotification();
   const {login, loading, success} = useLogin()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,6 +17,10 @@ const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) =
   }, [loading])
   useEffect(() => {
     if(success === true) {
+      api.success({
+        message:`${email}, 歡迎回家!`,
+        closeIcon:false
+      })
       onCancel()
     }
   }, [success])
@@ -32,6 +36,8 @@ const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) =
   }
 
   return (
+    <>
+    {contextHolder}
     <Modal
       title="登入"
       open={onOpen}
@@ -73,6 +79,7 @@ const LoginForm: React.FC<{onOpen: any, onCancel: any}> = ({onOpen, onCancel}) =
       </Form>
       </div>
     </Modal>
+    </>
   );
 };
 
