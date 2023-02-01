@@ -6,16 +6,24 @@ const VideoFormatForm: React.FC<{
   onfpsChange: any;
   onBitRateChange: any;
   onSizeChange: any;
+  onWidthChange: any;
+  onHeightChange: any;
   defaultFps: string;
   defaultBitRate: number;
   defaultSize: string;
+  defaultWidth: string;
+  defaultHeight: string;
 }> = ({
   onfpsChange,
   onBitRateChange,
   onSizeChange,
+  onWidthChange,
+  onHeightChange,
   defaultFps,
   defaultBitRate,
   defaultSize,
+  defaultWidth,
+  defaultHeight
 }) => {
   const { sizeArr, fpsArr } = constants.formats;
   const optionGenerator = (optionArray: string[] | number[]) =>
@@ -35,8 +43,11 @@ const VideoFormatForm: React.FC<{
         bitRate: defaultBitRate,
       }}
     >
-      <Form.Item name="size" label="影片尺寸">
-        <Select onChange={onSizeChange}>{optionGenerator(sizeArr)}</Select>
+      <Form.Item label="影片尺寸" >
+        <InputNumber name='width' defaultValue={defaultWidth} onChange={onWidthChange} controls={false}></InputNumber>
+        <span style={{verticalAlign: 'middle', margin: '0 10px'}}>X</span>
+        <InputNumber name='height' defaultValue={defaultHeight} onChange={onHeightChange} controls={false}></InputNumber>
+        {/* <Select onChange={onSizeChange}>{optionGenerator(sizeArr)}</Select> */}
       </Form.Item>
       <Form.Item name="fps" label="fps">
         <Select onChange={onfpsChange}>{optionGenerator(fpsArr)}</Select>
@@ -49,7 +60,7 @@ const VideoFormatForm: React.FC<{
             onChange={(val) => onBitRateChange(val)}
           />
         </Form.Item>
-        <span className="ant-form-text" style={{ marginLeft: 8 }}>
+        <span className="ant-form-text" style={{ marginLeft: 8, verticalAlign: 'sub', }}>
           K
         </span>
       </Form.Item>
