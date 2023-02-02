@@ -134,6 +134,10 @@ const createWindow = async () => {
     }
   })
 
+  mainWindow.webContents.session.webRequest.onCompleted({urls:['https://staging-odm.onead.tw/sessions/sign_in']},({responseHeaders}) => {
+    console.log(responseHeaders)
+  })
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
