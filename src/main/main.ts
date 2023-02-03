@@ -134,8 +134,19 @@ const createWindow = async () => {
     }
   })
 
-  mainWindow.webContents.session.webRequest.onCompleted({urls:['https://staging-odm.onead.tw/sessions/sign_in']},({responseHeaders}) => {
-    console.log(responseHeaders)
+  mainWindow.webContents.session.webRequest.onHeadersReceived({urls:['https://staging-odm.onead.tw/sessions/sign_in']},(details, callback) => {
+    if(details.responseHeaders && mainWindow) {
+      details.responseHeaders['Set-Cookie'][0] += ";SameSite=None;Secure"
+      console.log(details.responseHeaders)
+      callback({ responseHeaders: details.responseHeaders})
+    }
+    // const cookie = { url: 'http://www.github.com', name: 'dummy_name', value: 'dummy' }
+    // mainWindow && mainWindow.webContents.session.cookies.set(cookie)
+    // .then(() => {
+    //   // success
+    // }, (error) => {
+    //   console.error(error)
+    // })
   })
 
   mainWindow.on('closed', () => {
