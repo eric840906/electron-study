@@ -148,6 +148,16 @@ const createWindow = async () => {
     //   console.error(error)
     // })
   })
+  mainWindow.webContents.session.webRequest.onCompleted({urls:['https://staging-odm.onead.tw/sessions/sign_in']},() => {
+    // const cookie = { url: 'http://www.github.com', name: 'dummy_name', value: 'dummy' }
+    mainWindow && mainWindow.webContents.session.cookies.get({})
+    .then((cookie) => {
+      // success
+      console.log(cookie)
+    }, (error) => {
+      console.error(error)
+    })
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
